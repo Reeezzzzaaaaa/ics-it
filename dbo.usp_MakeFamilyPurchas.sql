@@ -18,17 +18,16 @@ BEGIN
 	SET NOCOUNT ON;
 
 	IF(isnull(@FamilySurName, '') = (SELECT 
-										SurName 
-									FROM dbo.Family 
-									WHERE SurName = @FamilySurName)) 
+						SurName 
+						FROM dbo.Family 
+						WHERE SurName = @FamilySurName)) 
 	
 	BEGIN
 		UPDATE dbo.Family
 		SET BudgetValue = (SELECT 
 			(F.BudgetValue - SUM(B.Value)) AS Remainder
 		FROM dbo.Family AS F 
-			INNER JOIN dbo.Basket AS B 
-			ON F.ID = B.ID_Family
+			INNER JOIN dbo.Basket AS B ON F.ID = B.ID_Family
 		WHERE F.SurName = @FamilySurName
 		GROUP BY 
 			F.SurName
